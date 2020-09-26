@@ -15,8 +15,26 @@ const url = 'https://www.taste.com.au/recipes/'
 
 
 
-app.get("/", (req,res) => {
-  res.send(url);
+app.post("/", (req,res) => {
+
+  (async () => {
+
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();
+    await page.goto(url, {waitUntil: 'networkidle2'});
+    const html = await page.content();
+
+    var ingredients = [];
+    await $('.ingredient-description', html).each(function() {
+      ingredients.push($(this).text().trim())
+    })
+    res.send(ingredients)
+
+
+    await browser.close()
+
+  })()
+
 })
 
 
