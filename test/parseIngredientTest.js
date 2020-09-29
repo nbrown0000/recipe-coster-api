@@ -3,13 +3,14 @@ const assert = require('assert');
 const {
   isMeasurement,
   isQuantity,
-  isUnit
+  isUnit,
+  isParenthesized,
+  isBeforePreparation,
+  parseIngredient
 } = require('../parseIngredient');
 
 
-const parseIngredient = require('../parseIngredient');
 
-// const { isAQuantity } = ingredientParser;
 
 describe("parseIngredient", function() {
 
@@ -72,5 +73,56 @@ describe("parseIngredient", function() {
       assert.strictEqual(isUnit(unit3), false)
     })
   });
+
+
+  describe("isParenthesized", function() {
+    it("should return true for '(diced)'", function() {
+      const parenthesized1 = "(diced)";
+      assert.strictEqual(isParenthesized(parenthesized1), true)
+    })
+    it("should return true for '(peeled and chopped)'", function() {
+      const parenthesized2 = "(peeled and chopped)";
+      assert.strictEqual(isParenthesized(parenthesized2), true)
+    })
+    it("should return false for 'mince beef'", function() {
+      const parenthesized3 = "mince beef";
+      assert.strictEqual(isParenthesized(parenthesized3), false)
+    })
+  });
+
+
+  describe("isBeforePreparation", function() {
+    it("should return true for 'lamb,'", function() {
+      const preparation1 = "lamb,";
+      assert.strictEqual(isBeforePreparation(preparation1), true)
+    })
+    it("should return false for 'banana'", function() {
+      const preparation2 = "banana";
+      assert.strictEqual(isBeforePreparation(preparation2), false)
+    })
+  });
+
+
+  describe("the one you've been waiting for:  parseIngredient", function() {
+    it("should return true for '20g unsalted butter'", function() {
+      const parse1 = parseIngredient('20g unsalted butter')
+      assert.strictEqual(parse1.quantity, '20')
+      assert.strictEqual(parse1.unit, 'g')
+      
+      //TODO: FIX EXTRA WHITE SPACE AT END
+      assert.strictEqual(parse1.product, 'unsalted butter ')
+
+      assert.strictEqual(parse1.preparation, '')
+      assert.strictEqual(parse1.parenthesized, '')
+    })
+  });
+
+
+
+  // parseIngredient('20g unsalted butter');
+// parseIngredient('4 small desiree potatoes, thinly sliced widthwise to 5mm thick ');
+// parseIngredient('6 zucchini flowers (optional), or another zucchini ');
+// parseIngredient('1 small zucchini, thinly sliced');
+// parseIngredient('100g Taleggio cheese, finely sliced ');
 
 })
