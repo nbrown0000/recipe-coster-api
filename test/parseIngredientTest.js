@@ -103,18 +103,19 @@ describe("parseIngredient", function() {
   });
 
 
-  describe("the one you've been waiting for:  parseIngredient", function() {
-    it("should return true for '20g unsalted butter'", function() {
+  describe("parseIngredient", function() {
+    it("should return correct values for '20g unsalted butter'", function() {
       const parse1 = parseIngredient('20g unsalted butter')
       assert.strictEqual(parse1.quantity, '20')
       assert.strictEqual(parse1.unit, 'g')
       
       //TODO: FIX EXTRA WHITE SPACE AT END
-      assert.strictEqual(parse1.product, 'unsalted butter ')
+      assert.strictEqual(parse1.product, 'unsalted butter')
 
       assert.strictEqual(parse1.preparation, '')
       assert.strictEqual(parse1.parenthesized, '')
     })
+    
   });
 
 

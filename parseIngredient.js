@@ -90,11 +90,11 @@ function parseIngredient(ingredient) {
   }
 
   return {
-    quantity: quantity,
-    unit: unit,
-    product: product,
-    preparation: preparation,
-    parenthesized: parenthesized
+    quantity: quantity.trim(),
+    unit: unit.trim(),
+    product: product.trim(),
+    preparation: preparation.trim(),
+    parenthesized: parenthesized.trim()
   }
 }
 
