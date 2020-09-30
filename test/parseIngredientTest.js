@@ -112,15 +112,39 @@ describe("parseIngredient", function() {
       assert.strictEqual(parse1.preparation, '')
       assert.strictEqual(parse1.parenthesized, '')
     })
+    it("should return correct values for '100g Taleggio cheese, finely sliced '", function() {
+      const parse1 = parseIngredient('100g Taleggio cheese, finely sliced ')
+      assert.strictEqual(parse1.quantity, '100')
+      assert.strictEqual(parse1.unit, 'g')
+      assert.strictEqual(parse1.product, 'Taleggio cheese')
+      assert.strictEqual(parse1.preparation, 'finely sliced')
+      assert.strictEqual(parse1.parenthesized, '')
+    })
+    it("should return correct values for '1 small zucchini, thinly sliced'", function() {
+      const parse1 = parseIngredient('1 small zucchini, thinly sliced')
+      assert.strictEqual(parse1.quantity, '1')
+      assert.strictEqual(parse1.unit, '')
+      assert.strictEqual(parse1.product, 'small zucchini')
+      assert.strictEqual(parse1.preparation, 'thinly sliced')
+      assert.strictEqual(parse1.parenthesized, '')
+    })
+    it("should return correct values for '6 zucchini flowers (optional), or another zucchini '", function() {
+      const parse1 = parseIngredient('6 zucchini flowers (optional), or another zucchini ')
+      assert.strictEqual(parse1.quantity, '6')
+      assert.strictEqual(parse1.unit, '')
+      assert.strictEqual(parse1.product, 'zucchini flowers')
+      assert.strictEqual(parse1.preparation, 'or another zucchini')
+      assert.strictEqual(parse1.parenthesized, '(optional)')
+    })
+    it("should return correct values for '4 small desiree potatoes, thinly sliced widthwise to 5mm thick '", function() {
+      const parse1 = parseIngredient('4 small desiree potatoes, thinly sliced widthwise to 5mm thick ')
+      assert.strictEqual(parse1.quantity, '4')
+      assert.strictEqual(parse1.unit, '')
+      assert.strictEqual(parse1.product, 'small desiree potatoes')
+      assert.strictEqual(parse1.preparation, 'thinly sliced widthwise to 5mm thick')
+      assert.strictEqual(parse1.parenthesized, '')
+    })
     
   });
-
-
-
-  // parseIngredient('20g unsalted butter');
-// parseIngredient('4 small desiree potatoes, thinly sliced widthwise to 5mm thick ');
-// parseIngredient('6 zucchini flowers (optional), or another zucchini ');
-// parseIngredient('1 small zucchini, thinly sliced');
-// parseIngredient('100g Taleggio cheese, finely sliced ');
 
 })
