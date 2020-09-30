@@ -75,7 +75,12 @@ function parseIngredient(ingredient) {
     }
     // if component[i] is a note (parenthesized)
     else if(isParenthesized(components[i])) {
-      parenthesized = parenthesized + components[i];
+      if(components[i].match('[\(][a-z]+[\)]\,$')) {
+        parenthesized = parenthesized + components[i].slice(0,-1);
+      }
+      else {
+        parenthesized = parenthesized + components[i];
+      }
     }
     // if component[i] is a product (or part of product)
     else {
