@@ -1,39 +1,25 @@
 const express = require("express");
-const puppeteer = require('puppeteer');
-const $ = require('cheerio');
 const bodyParser = require('body-parser')
 const cors = require('cors');
+const { scrapeUrl } = require('./scrapeUrl');
+const { parseIngredient } = require('./parseIngredient');
 
 const app = express();
 app.use(bodyParser.json())
 app.use(cors());
 
 
-const url = 'https://www.taste.com.au/recipes/'
-      + 'french-style-chicken-potatoes/'
-      + '21c92bf7-4876-49eb-aff3-728ce7273eea?r=dinner&h=Dinner';
+const url = "https://www.taste.com.au/recipes/french-style-chicken-potatoes/21c92bf7-4876-49eb-aff3-728ce7273eea?r=dinner&h=Dinner";
 
 
 
-app.post("/", (req,res) => {
+app.post("/", async(req,res) => {
+  const ingredients = await scrapeUrl(req.body.url)
+  const parsedIngredients = await ingredients.map(ingredient => {
+    return parseIngredient(ingredient)
+  })
 
-  (async () => {
-
-    const browser = await puppeteer.launch();
-    const page = await browser.newPage();
-    await page.goto(url, {waitUntil: 'networkidle2'});
-    const html = await page.content();
-
-    var ingredients = [];
-    await $('.ingredient-description', html).each(function() {
-      ingredients.push($(this).text().trim())
-    })
-    res.send(ingredients)
-
-
-    await browser.close()
-
-  })()
+  res.send(parsedIngredients)
 
 })
 
